@@ -32,11 +32,15 @@ class Web < Sinatra::Base
       sortedWordLength = wordLengthArray.sort
       #gets median value
       medianWordLength = returnMedianLength sortedWordLength
+
+      modeLength = returnModeLength sortedWordLength
+      mostComLetter = returnMostFrequentLetter passInFileText
       passInFile.close
       #lines = 0
       erb :index1, :locals => {'fileNam' => filename,
         'lineCount' => lines, 'numWords' => words,
-        'meanLen' => meanLength, "medianLen" => medianWordLength}
+        'meanLen' => meanLength, "medianLen" => medianWordLength,
+        'modeLen' => modeLength, "mostCommonLetter"=> mostComLetter}
   end
 
   def lineCount(txt)
@@ -74,5 +78,56 @@ class Web < Sinatra::Base
 
   def returnMedianLength(sortedArray)
     meanCharactersPerWord = sortedArray[sortedArray.length/2]
+  end
+
+  def returnModeLength(sortedArray)
+    numberToLookFor = 0
+    count = 0
+    highestCount = 0
+    currentMode = 0
+    (0..sortedArray.length-1).each do |i|
+      #if the number looked for is the same as the indexed value
+      if(numberToLookFor == sortedArray[i])
+        count += 1
+      else #else check count against highest count,
+        if(highestCount < count)
+          highestCount = count
+          currentMode = numberToLookFor
+        end
+        numberToLookFor = sortedArray[i]
+        count = 0
+        count += 1
+      end
+    end
+    toReturn = currentMode
+  end
+
+
+  def returnMostFrequentLetter(textString)
+    #split string into char array
+    textString.downcase
+    text = textString.chars.sort_by(&:downcase).join
+    charArray = text.scan /\w/
+    #Loop through array
+    letterToLookFor = 'a'
+    count = 0
+    highestCount = 0
+    currentMostPopular = 'a'
+    (0..charArray.length-1).each do |i|
+      #if the number looked for is the same as the indexed value
+      if(letterToLookFor == charArray[i])
+        count += 1
+      else #else check count against highest count,
+        if(highestCount < count)
+          highestCount = count
+          currentMostPopular = letterToLookFor
+        end
+        letterToLookFor = charArray[i]
+        count = 0
+        count += 1
+      end
+    end
+    toReturn = currentMostPopular
+    #pick letter, loop through previous letter list
   end
 end
