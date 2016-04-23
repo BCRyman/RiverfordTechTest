@@ -12,16 +12,27 @@ class Web < Sinatra::Base
   end
 
   post '/getstats/' do
+    #gets file from form
       filename = params[:myFile][:filename]
       file = params[:myFile][:tempfile]
+      #open file
       passInFile = open(file)
       passInFileText = passInFile.read
+      #get line count
       lines = lineCount passInFileText
-      words = wordCount passInFileText
+      #create array of words in string
+      wordArray = splitStringIntoWords passInFileText
+      #get word count
+      words = wordCount wordArray
+      #create array for word lengths
+      wordLengthArray = getWordLengths wordArray
+
+      #get mean word lengths
+      meanLength = meanWordLength(wordLengthArray)
       passInFile.close
       #lines = 0
       erb :index1, :locals => {'fileNam' => filename,
-        'lineCount' => lines, 'numWords' => words}
+        'lineCount' => lines, 'numWords' => words, 'meanLen' => meanLength}
   end
 
   def lineCount(txt)
@@ -32,8 +43,28 @@ class Web < Sinatra::Base
     returnLineCount = lineCount
   end
 
-  def wordCount(txt)
+  #seperates string by all non alphabetical characters
+  def splitStringIntoWords(txt)
     words = txt.split(/\W/)
-    wordCount = words.count
+  end
+
+  def wordCount(wordsArray)
+    wordCount = wordsArray.count
+  end
+
+  def getWordLengths(words)
+    wordLengths = Array.new(words.length)
+    (0..(words.length-1)).each do |i|
+      wordLengths[i] = words[i].length
+    end
+    returnArray = wordLengths
+  end
+
+  def meanWordLength(wordLengths)
+      overallCharacterCount = 0
+      (0..(wordLengths.length-1)).each do |i|
+        overallCharacterCount += wordLengths[i]
+      end
+      meanCharsPerWord = (overallCharacterCount.fdiv(wordLengths.count)).round(1)
   end
 end
