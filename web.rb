@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'logger'
+
 class Web < Sinatra::Base
 
   set :views, File.join(File.dirname(__FILE__), 'views')
@@ -26,13 +26,17 @@ class Web < Sinatra::Base
       words = wordCount wordArray
       #create array for word lengths
       wordLengthArray = getWordLengths wordArray
-
       #get mean word lengths
       meanLength = meanWordLength(wordLengthArray)
+      #sorts the array from lowest to highest
+      sortedWordLength = wordLengthArray.sort
+      #gets median value
+      medianWordLength = returnMedianLength sortedWordLength
       passInFile.close
       #lines = 0
       erb :index1, :locals => {'fileNam' => filename,
-        'lineCount' => lines, 'numWords' => words, 'meanLen' => meanLength}
+        'lineCount' => lines, 'numWords' => words,
+        'meanLen' => meanLength, "medianLen" => medianWordLength}
   end
 
   def lineCount(txt)
@@ -66,5 +70,9 @@ class Web < Sinatra::Base
         overallCharacterCount += wordLengths[i]
       end
       meanCharsPerWord = (overallCharacterCount.fdiv(wordLengths.count)).round(1)
+  end
+
+  def returnMedianLength(sortedArray)
+    meanCharactersPerWord = sortedArray[sortedArray.length/2]
   end
 end
