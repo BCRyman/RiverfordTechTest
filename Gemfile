@@ -1,3 +1,5 @@
 source 'https://rubygems.org'
 gem 'sinatra', '1.1.0'
-gem 'sass'
+gem 'sass', '3.4.22'
+gem 'rack',  '~> 1.1'
+gem 'tilt', '1.4.1'

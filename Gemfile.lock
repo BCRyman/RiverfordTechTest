@@ -12,8 +12,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  sass
+  rack (~> 1.1)
+  sass (= 3.4.22)
   sinatra (= 1.1.0)
+  tilt (= 1.4.1)
 
 BUNDLED WITH
    1.11.2
