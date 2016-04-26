@@ -1,5 +1,7 @@
 require 'sinatra/base'
 require './logic.rb'
+require 'sass'
+
 class Web < Sinatra::Base
 
   set :views, File.join(File.dirname(__FILE__), 'views')
@@ -14,7 +16,7 @@ class Web < Sinatra::Base
   get '/styles.css' do
     scss :styles
   end
-  
+
   post '/getstats/' do
     if params[:myFile].nil?
       erb :index
