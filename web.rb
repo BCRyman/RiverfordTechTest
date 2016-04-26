@@ -11,6 +11,10 @@ class Web < Sinatra::Base
     erb :index
   end
 
+  get '/styles.css' do
+    scss :styles
+  end
+  
   post '/getstats/' do
     if params[:myFile].nil?
       erb :index
