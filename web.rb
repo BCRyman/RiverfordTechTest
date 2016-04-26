@@ -12,7 +12,6 @@ class Web < Sinatra::Base
   end
 
   post '/getstats/' do
-
     if params[:myFile].nil?
       erb :index
     else
