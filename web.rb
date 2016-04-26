@@ -16,7 +16,9 @@ class Web < Sinatra::Base
   get '/styles.css' do
     scss :styles
   end
-
+  get '/logoimage' do
+    send_file './public/images/logo.png'
+  end
   post '/getstats/' do
     if params[:myFile].nil?
       erb :index
