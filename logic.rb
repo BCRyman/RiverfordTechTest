@@ -8,7 +8,8 @@ end
 
 #seperates string by all non alphabetical characters
 def splitStringIntoWords(txt)
-  words = txt.split(/\W/)
+  txt = txt.gsub(/\n|\r|\W/,",")
+  words = txt.split(/,,+|,/)
 end
 
 def wordCount(wordsArray)

@@ -34,6 +34,7 @@ class Web < Sinatra::Base
         lines = lineCount passInFileText
         #create array of words in string
         wordArray = splitStringIntoWords passInFileText
+        puts wordArray
         #get word count
         words = wordCount wordArray
         #create array for word lengths
